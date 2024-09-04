@@ -41,20 +41,20 @@ Create a Database:
 Log in to your MySQL server and create a database for the project.
 sql
 Copy code
-CREATE DATABASE ecommerce_db;
+CREATE DATABASE ecommerceordermanagementsystem;
 Set Up Tables:
 
 Use the provided SQL scripts (usually located in a resources or sql folder) to create the necessary tables and insert initial data.
 bash
 Copy code
-mysql -u your_username -p ecommerce_db < path/to/your/schema.sql
+mysql -u your_username -p ecommerceordermanagementsystem < path/to/your/schema.sql
 Update Database Configuration:
 
 Update the database connection settings in the project (usually found in a config.properties file or directly in the code).
 Example configuration might be found in src/main/resources/config.properties:
 properties
 Copy code
-db.url=jdbc:mysql://localhost:3306/ecommerce_db
+db.url=jdbc:mysql://localhost:3306/ecommerceordermanagementsystem
 db.username=your_username
 db.password=your_password
 Step 3: Build the Project
@@ -64,7 +64,7 @@ If you're not using Maven, you can compile the Java files manually using javac:
 
 bash
 Copy code
-javac -d out -sourcepath src src/com/cts/MainApp.java
+javac -d out -sourcepath src src/com/cts/client/main.java
 Then, package the application into a JAR:
 
 bash
@@ -80,7 +80,7 @@ Or, if you didn't package it into a JAR, you can run the MainApp class directly:
 
 bash
 Copy code
-java -cp out com.cts.MainApp
+java -cp out com.cts.client.main
 
 Step 5: Using the Application
 Follow the prompts in the console to interact with the application. Depending on your implementation, you might be able to:
