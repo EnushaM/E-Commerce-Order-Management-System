@@ -40,7 +40,7 @@ public class CustomerDaoImplementation implements CustomerDao {
 	}
 
 	@Override
-	public Customer addCustomer(String name, String email, String phone, String address) throws CustomerInsertionException {
+	public Customer addCustomer(String name, String email, long phone, String address) throws CustomerInsertionException {
 		// TODO Auto-generated method stub
 		try {
 			// SQL insert statement without customer_id
@@ -57,7 +57,7 @@ public class CustomerDaoImplementation implements CustomerDao {
 			 */
 			psmt.setString(1, name);
 			psmt.setString(2, email);
-			psmt.setString(3, phone);
+			psmt.setLong(3, phone);
 			psmt.setString(4, address);
 
 			psmt.executeUpdate();
@@ -86,7 +86,7 @@ public class CustomerDaoImplementation implements CustomerDao {
 
 			ResultSet rs = psmt.executeQuery();
 			if (rs.next()) {
-				customer = new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+				customer = new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getLong(4),
 						rs.getString(5));
 			}
 			else {
@@ -119,7 +119,7 @@ public class CustomerDaoImplementation implements CustomerDao {
 							rs.getInt(1), 
 							name, 
 							rs.getString(3), 
-							rs.getString(4), 
+							rs.getLong(4), 
 							rs.getString(5)
 							);
 					customersList.add(customer);
@@ -147,7 +147,7 @@ public class CustomerDaoImplementation implements CustomerDao {
 
 			ResultSet rs = psmt.executeQuery();
 			if (rs.next()) {
-				customer =new Customer(customer_id,rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
+				customer =new Customer(customer_id,rs.getString(2),rs.getString(3),rs.getLong(4),rs.getString(5));
 			} 
 			rs.close();
 			psmt.close();
@@ -179,7 +179,7 @@ public class CustomerDaoImplementation implements CustomerDao {
 				while (rs_psmt_selectAllCustomers.next()) {
 					Customer customer = new Customer(rs_psmt_selectAllCustomers.getInt(1),
 							rs_psmt_selectAllCustomers.getString(2), rs_psmt_selectAllCustomers.getString(3),
-							rs_psmt_selectAllCustomers.getString(4), rs_psmt_selectAllCustomers.getString(5));
+							rs_psmt_selectAllCustomers.getLong(4), rs_psmt_selectAllCustomers.getString(5));
 					customersList.add(customer);
 				}
 			}
@@ -216,14 +216,14 @@ public class CustomerDaoImplementation implements CustomerDao {
 	}
 
 	@Override
-	public int updateCustomer(int customer_id, String existingName, String existingPhone, String existingEmail,
-			String existingAddress, String name, String phone, String email, String address) throws CustomerUpdationException {
+	public int updateCustomer(int customer_id, String existingName, long existingPhone, String existingEmail,
+			String existingAddress, String name, long phone, String email, String address) throws CustomerUpdationException {
 		// TODO Auto-generated method stub
 		try {
 			StringBuilder updateQuery = new StringBuilder("UPDATE customers SET ");
 			if (!name.equals(existingName))
 				updateQuery.append("name=?, ");
-			if (!phone.equals(existingPhone))
+			if (phone!=existingPhone)
 				updateQuery.append("phone=?, ");
 			if (!email.equals(existingEmail))
 				updateQuery.append("email=?, ");
@@ -241,8 +241,8 @@ public class CustomerDaoImplementation implements CustomerDao {
 			int parameterIndex = 1;
 			if (!name.equals(existingName))
 				update_psmt.setString(parameterIndex++, name);
-			if (!phone.equals(existingPhone))
-				update_psmt.setString(parameterIndex++, phone);
+			if (phone!=existingPhone)
+				update_psmt.setLong(parameterIndex, parameterIndex);
 			if (!email.equals(existingEmail))
 				updateQuery.append("email=?, ");
 			if (!address.equals(existingAddress))

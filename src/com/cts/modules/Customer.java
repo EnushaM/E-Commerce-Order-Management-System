@@ -1,4 +1,7 @@
 package com.cts.modules;
+
+import java.math.*;
+
 /*
 The package modules contains the class modules for each four database in the E-Commerce database 
 Each module contains the entities of the database with separate getter, setter methods for each 
@@ -9,13 +12,13 @@ public class Customer {
 	private int Customer_id;
 	private String name;
 	private String email;
-	private String phone;
+	private long phone;
 	private String address;
 	public Customer() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Customer(int Customer_id, String name, String email, String phone, String address) {
+	public Customer(int Customer_id, String name, String email, long phone, String address) {
 		super();
 		this.Customer_id = Customer_id;
 		this.name = name;
@@ -30,10 +33,10 @@ public class Customer {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getPhone() {
+	public long getPhone() {
 		return phone;
 	}
-	public void setPhone(String phone) {
+	public void setPhone(long phone) {
 		this.phone = phone;
 	}
 	public String getAddress() {

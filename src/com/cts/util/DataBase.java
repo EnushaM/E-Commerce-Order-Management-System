@@ -1,7 +1,7 @@
 package com.cts.util;
 import java.sql.*;
 public class DataBase {
-	private static final String url = "jdbc:mysql://localhost:3306/order_management";
+	private static final String url = "jdbc:mysql://localhost:3306/ecommerceordermanagement";
 	private static final String user = "root";
 	private static final String password = "system";
 	private static Connection con;

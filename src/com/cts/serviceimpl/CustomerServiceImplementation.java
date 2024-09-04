@@ -22,11 +22,11 @@ public class CustomerServiceImplementation implements CustomerService {
 	private CustomerDao customerDao;
 	int random;
 	private String name;
-	private String phone;
+	private long phone;
 	private String email;
 	private String address;
 	private String existingName;
-	private String existingPhone;
+	private long existingPhone;
 	private String existingEmail;
 	private String existingAddress;
 	private Customer customer;
@@ -130,9 +130,13 @@ public class CustomerServiceImplementation implements CustomerService {
 			}
 			System.out.print(
 					"Enter the updated Customer's Phone (leave blank to keep current Phone: " + existingPhone + "): ");
-			String phone = sc.nextLine();
-			if (phone.isEmpty()) {
-				phone = existingPhone;
+			String phoneinput = sc.nextLine();
+			if (!phoneinput.isEmpty()) {
+				try {
+					phone = Long.parseLong(phoneinput);
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid input for quantity. Keeping current value.");
+				}
 			}
 
 			System.out.print(
@@ -237,12 +241,17 @@ public class CustomerServiceImplementation implements CustomerService {
 			String email = sc.nextLine().trim();
 
 			System.out.print("Enter the Customer Phone Number: ");
-			String phone = sc.nextLine().trim();
-
+			String phoneinput = sc.nextLine().trim();
+			if (!phoneinput.isEmpty()) {
+				try {
+					phone = Long.parseLong(phoneinput);
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid input for quantity. Keeping current value.");
+				}
+			}
 			System.out.print("Enter the Customer Address: ");
 			String address = sc.nextLine().trim();
 
-			Customer customer = null;
 			customer = customerDao.addCustomer(name, email, phone, address);
 			System.out.println("Customer added successfully");
 			System.out.println("View your added Customer's details here:-");

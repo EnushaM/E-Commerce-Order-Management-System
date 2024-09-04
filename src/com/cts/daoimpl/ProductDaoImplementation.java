@@ -105,7 +105,7 @@ public class ProductDaoImplementation implements ProductDao {
 		try {
 			String select = "select * from products where name = ?";
 			PreparedStatement psmt = con.prepareStatement(select, ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_UPDATABLE);
+					ResultSet.CONCUR_READ_ONLY);
 			psmt.setString(1, name);
 
 			ResultSet rs = psmt.executeQuery();

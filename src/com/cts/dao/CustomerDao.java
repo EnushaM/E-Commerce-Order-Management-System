@@ -11,7 +11,7 @@ import com.cts.modules.Customer;
 import com.cts.modules.Product;
 
 public interface CustomerDao {
-	Customer addCustomer(String name, String email, String phone, String address) throws CustomerInsertionException;
+	Customer addCustomer(String name, String email, long phone, String address) throws CustomerInsertionException;
 
 	Customer viewCustomerById(int customer_id) throws CustomerSelectionException, CustomerNotFoundException;
 
@@ -21,8 +21,8 @@ public interface CustomerDao {
 
 	boolean deleteCustomer(int customer_id) throws CustomerDeletionException;
 
-	int updateCustomer(int customer_id, String existingName, String existingPhone, String existingEmail,
-			String existingAddress, String name, String phone, String email, String address) throws CustomerUpdationException;
+	int updateCustomer(int customer_id, String existingName, long existingPhone, String existingEmail,
+			String existingAddress, String name, long phone, String email, String address) throws CustomerUpdationException;
 
 	Customer existCustomer(int customer_id) throws CustomerSelectionException;
 	
