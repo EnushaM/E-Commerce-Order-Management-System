@@ -68,12 +68,15 @@ public class OrderItemCart {
 	@Override
 	public String toString() 
 	{
-		return "The Order Item Id is " + order_item_id + "\n" 
-		+ "The Product Id is " + product_id + "\n" 
-		+ "The Name of the Order Item is" + name+"\n"
-		+" The Price of the Order Item is" + price +"\n"
-		+ "The Quantity of the order item is "+ quantity + "\n"
-		+ "The Total price of the Order Item is"+ total_price+"\n";
+		return String.format(
+			    "-----------------------------------------------------------------------------------------------\n" +
+			    "| %-20s%-20s%-30s%-20s%-20s%-25s |\n" +
+			    "-----------------------------------------------------------------------------------------------\n" +
+			    "| %-20d%-20d%-30s%-20.2f%-20d%-25.2f |\n" +
+			    "-----------------------------------------------------------------------------------------------\n",
+			    "Order Item Id", "Product Id", "Order Item Name", "Price", "Quantity", "Total Price",
+			    order_item_id, product_id, name, price, quantity, total_price
+			);
 	}
 
 }

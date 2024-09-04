@@ -15,6 +15,7 @@ import java.util.Scanner;
 import com.cts.dao.ProductDao;
 import com.cts.exceptions.ProductDeletionException;
 import com.cts.exceptions.ProductInsertionException;
+import com.cts.exceptions.ProductNotFoundException;
 import com.cts.exceptions.ProductSelectionException;
 import com.cts.exceptions.ProductUpdationException;
 import com.cts.modules.Product;
@@ -78,7 +79,7 @@ public class ProductDaoImplementation implements ProductDao {
 		}
 	}
 
-	public Product viewProductById(int product_id) throws ProductSelectionException {
+	public Product viewProductById(int product_id) throws ProductNotFoundException {
 		try {
 			String select = "Select * from products where product_id=?";
 			PreparedStatement psmt = con.prepareStatement(select);
@@ -90,12 +91,15 @@ public class ProductDaoImplementation implements ProductDao {
 				product = new Product(rs.getInt("product_id"), rs.getString("name"), rs.getString("description"),
 						rs.getDouble("price"), rs.getInt("quantity_in_stock"));
 			}
+			if(product==null)
+			{
+				throw new ProductNotFoundException("Product not Found");
+			}
 			rs.close();
 			psmt.close();
 			return product;
 		} catch (SQLException e) {
-			throw new ProductSelectionException("Error Viewing Products" + e);
-
+			throw new ProductNotFoundException(e.toString()+ e.getMessage());
 		}
 	}
 
@@ -122,13 +126,13 @@ public class ProductDaoImplementation implements ProductDao {
 			return productsList;
 
 		} catch (SQLException e) {
-			throw new ProductSelectionException("Error Viewing Products" + e);
+			throw new ProductSelectionException("Error: ProductSelectionException" + e);
 
 		}
 	}
 
 	@Override
-	public Product existProduct(int product_id) throws ProductSelectionException {
+	public Product existProduct(int product_id) throws ProductNotFoundException {
 		try {
 			String exist_product = "select * from products where product_id=?";
 			PreparedStatement psmt = con.prepareStatement(exist_product);
@@ -140,11 +144,16 @@ public class ProductDaoImplementation implements ProductDao {
 			}
 			psmt.close();
 			rs.close();
+			if (product == null) {
+				throw new ProductNotFoundException("Product with ID " + product_id + " not found.");
+			}
 			return product;
 		} catch (SQLException e) {
-			throw new ProductSelectionException("Error Viewing Products" + e);
+			System.out.println(e.toString()+"Product not found");
 
 		}
+		return product;
+		
 	}
 
 	@Override

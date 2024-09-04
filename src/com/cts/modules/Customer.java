@@ -60,11 +60,14 @@ public class Customer {
 
 	@Override
 	public String toString() {
-		return "The Customer's id is "+Customer_id + "\n"
-				+ "The Customer's Name is " + name + "\n"
-				+"The Customer's E-mail is " + email + "\n"
-				+"The Customer's Phone is " + phone + "\n"
-				+"The Customer's Address is " + address + "\n";
+		return String.format(
+			    "-----------------------------------------------------------------------------------------\n" +
+			    "| %-15s %-20s %-30s %-15s %-40s |\n" +
+			    "| %-15d %-20s %-30s %-15s %-40s |\n" +
+			    "-----------------------------------------------------------------------------------------\n",
+			    "Customer Id", "Name", "E-mail", "Phone", "Address",
+			    Customer_id, name, email, phone, address
+			);
 	}
 	
 	

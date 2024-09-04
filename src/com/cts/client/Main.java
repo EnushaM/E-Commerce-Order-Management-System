@@ -9,6 +9,7 @@ import com.cts.exceptions.CustomerSelectionException;
 import com.cts.exceptions.OrderItemsDeletionException;
 import com.cts.exceptions.OrderItemsSelectionException;
 import com.cts.exceptions.OrderItemsUpdationException;
+import com.cts.exceptions.OrderNotFoundException;
 import com.cts.exceptions.OrderSelectionException;
 import com.cts.exceptions.OrderUpdationException;
 import com.cts.exceptions.ProductNotFoundException;
@@ -24,80 +25,81 @@ import com.cts.util.DataBase;
 
 public class Main {
 
-    private static Connection con;
-    /*
-    private static ProductManager productManager;
-    private static CustomerManager customerManager;
-    private static OrderManager orderManager;
-    */
-    private static ProductService productService;
-    private static CustomerService customerService;
-    private static OrderService orderService;	   
-    private static Scanner sc = new Scanner(System.in);
+	private static Connection con;
+	/*
+	 * private static ProductManager productManager; private static CustomerManager
+	 * customerManager; private static OrderManager orderManager;
+	 */
+	private static ProductService productService;
+	private static CustomerService customerService;
+	private static OrderService orderService;
+	private static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) throws ProductSelectionException, ProductNotFoundException, CustomerNotFoundException, CustomerSelectionException, OrderSelectionException, OrderItemsSelectionException, OrderUpdationException, UpdateStockException, OrderItemsUpdationException, OrderItemsDeletionException {
-        try {
-            con = DataBase.getDatabaseConnection();
-            
-            /*
-             * productManager = new ProductManager(con);
-             * customerManager = new CustomerManager(con);
-             * orderManager = new OrderManager(con);
-             */
-            
-            
-            productService=new ProductServiceImplementation(con);
-            customerService=new CustomerServiceImplementation(con);
-            orderService=new OrderServiceImplementation(con);
-            menuOptions();
+	public static void main(String[] args)
+			throws ProductSelectionException, ProductNotFoundException, CustomerNotFoundException,
+			CustomerSelectionException, OrderSelectionException, OrderItemsSelectionException, OrderUpdationException,
+			UpdateStockException, OrderItemsUpdationException, OrderItemsDeletionException {
+		try {
+			con = DataBase.getDatabaseConnection();
 
-        } 
-        //we'are not including the catch clause since, we used another try catch block for checking whether the connection is closed
-        finally {
-            try {
-                if (con != null && !con.isClosed()) {
-                    con.close();
-                    System.out.println("Database Connection Closed");
-                }
-            } catch (SQLException e) {
-                System.out.println("Failed to close Database Connection");
-                e.printStackTrace();
-            }
-        }
-    }
+			/*
+			 * productManager = new ProductManager(con); customerManager = new
+			 * CustomerManager(con); orderManager = new OrderManager(con);
+			 */
 
-    public static void menuOptions() throws ProductSelectionException, ProductNotFoundException, CustomerNotFoundException, CustomerSelectionException, OrderSelectionException, OrderItemsSelectionException, OrderUpdationException, UpdateStockException, OrderItemsUpdationException, OrderItemsDeletionException {
-        int option;
-        do {
-            System.out.println("**************** Welcome to E-commerce Order Management System ****************");
-            System.out.println("Choose (1) for Product Management");
-            System.out.println("Choose (2) for Customer Management");
-            System.out.println("Choose (3) for Order Management");
-            System.out.println("Choose (4) to Exit the Application");
-            System.out.print("And your Option is: ");
-            option = sc.nextInt();
-            sc.nextLine(); 
-            switch (option) {
-                case 1:
-                	menuProductOptions();
-                    break;
-                case 2:
-                    menuCustomerOptions();
-                    break;
-                case 3:
-                	menuOrderOptions();
-                    break;
-                case 4:
-                    System.out.println("Thank you. We believe that your queries have been done satisfyingly. Come Again");
-                    break;
-                default:
-                    System.out.println("Sorry, Invalid Option, Choose the available option!");
-            }
-        } while (option != 4);
-    }
-    
-    
-	public static void menuProductOptions() throws ProductNotFoundException, ProductSelectionException {
+			productService = new ProductServiceImplementation(con);
+			customerService = new CustomerServiceImplementation(con);
+			orderService = new OrderServiceImplementation(con);
+			menuOptions();
+
+		}
+		// we'are not including the catch clause since, we used another try catch block
+		// for checking whether the connection is closed
+		finally {
+			try {
+				if (con != null && !con.isClosed()) {
+					con.close();
+					System.out.println("Database Connection Closed");
+				}
+			} catch (SQLException e) {
+				System.out.println("Failed to close Database Connection");
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static void menuOptions() {
+		int option;
+		do {
+			System.out.println("**************** Welcome to E-commerce Order Management System ****************");
+			System.out.println("Choose (1) for Product Management");
+			System.out.println("Choose (2) for Customer Management");
+			System.out.println("Choose (3) for Order Management");
+			System.out.println("Choose (4) to Exit the Application");
+			System.out.print("And your Option is: ");
+			option = sc.nextInt();
+			sc.nextLine();
+			switch (option) {
+			case 1:
+				menuProductOptions();
+				break;
+			case 2:
+				menuCustomerOptions();
+				break;
+			case 3:
+				menuOrderOptions();
+				break;
+			case 4:
+				System.out.println("Thank you. We believe that your queries have been done satisfyingly. Come Again");
+				break;
+			default:
+				System.out.println("Sorry, Invalid Option, Choose the available option!");
+			}
+
+		} while (option != 4);
+	}
+
+	public static void menuProductOptions() {
 		int option;
 		do {
 			System.out.println("**************** Welcome to Product Management Menu ****************");
@@ -117,7 +119,7 @@ public class Main {
 			case 2:
 				productService.viewProductBySearch();
 				break;
-			case 3:	
+			case 3:
 				productService.updateProduct();
 				break;
 			case 4:
@@ -132,10 +134,12 @@ public class Main {
 			default:
 				System.out.println("Sorry, Invalid Option, Choose only from the available option!");
 			}
+
 		} while (option != 6);
-		
+
 	}
-	public static void menuCustomerOptions() throws CustomerNotFoundException, CustomerSelectionException {
+
+	public static void menuCustomerOptions() {
 		int option;
 		// using do while to enter enter the option and to leave the loop, if the option
 		// is not in the case list or the chosen option is exit
@@ -171,11 +175,13 @@ public class Main {
 				break;
 			default:
 				System.out.println("Sorry, Invalid Option, Choose the available option!");
+
 			}
 		} while (option != 6);
 
 	}
-    public static void menuOrderOptions() throws ProductSelectionException, OrderSelectionException, OrderItemsSelectionException, OrderUpdationException, CustomerSelectionException, UpdateStockException, OrderItemsUpdationException, OrderItemsDeletionException {
+
+	public static void menuOrderOptions() {
 		int option;
 		do {
 			System.out.println("**************** Welcome to the Order Management Menu ****************");
@@ -211,7 +217,8 @@ public class Main {
 			default:
 				System.out.println("Sorry, Invalid Option, Choose the available option!");
 			}
+
 		} while (option != 6);
-		
+
 	}
 }

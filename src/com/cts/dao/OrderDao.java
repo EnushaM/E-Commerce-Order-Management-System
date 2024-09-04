@@ -8,6 +8,7 @@ import com.cts.exceptions.OrderInsertionException;
 import com.cts.exceptions.OrderItemsDeletionException;
 import com.cts.exceptions.OrderItemsSelectionException;
 import com.cts.exceptions.OrderItemsUpdationException;
+import com.cts.exceptions.OrderNotFoundException;
 import com.cts.exceptions.OrderSelectionException;
 import com.cts.exceptions.OrderUpdationException;
 import com.cts.exceptions.UpdateStockException;
@@ -26,7 +27,7 @@ public interface OrderDao {
 
 	List<OrderItemCart> viewOrderitems(int order_id) throws OrderItemsSelectionException;
 
-	Order existOrder(int order_id) throws OrderSelectionException;
+	Order existOrder(int order_id) throws OrderSelectionException, OrderNotFoundException;
 
 	Map<Integer, Integer> selectOrderItem(int order_id) throws OrderSelectionException;
 
@@ -40,9 +41,9 @@ public interface OrderDao {
 
 	boolean updateOrderTotal(int order_id, double newTotalAmount) throws OrderUpdationException;
 
-	Order viewOrderById(int order_id) throws OrderSelectionException;
+	Order viewOrderById(int order_id) throws OrderSelectionException, OrderNotFoundException;
 
-	Map<String, Object> viewOrder(int order_id) throws OrderSelectionException;
+	Map<String, Object> viewOrder(int order_id) throws OrderSelectionException, OrderNotFoundException;
 
 	void updateProductStock(int product_id, int quantityToBeAdded) throws UpdateStockException;
 

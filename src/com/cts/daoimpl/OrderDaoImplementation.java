@@ -22,6 +22,7 @@ import com.cts.exceptions.OrderInsertionException;
 import com.cts.exceptions.OrderItemsDeletionException;
 import com.cts.exceptions.OrderItemsSelectionException;
 import com.cts.exceptions.OrderItemsUpdationException;
+import com.cts.exceptions.OrderNotFoundException;
 import com.cts.exceptions.OrderSelectionException;
 import com.cts.exceptions.OrderUpdationException;
 import com.cts.exceptions.UpdateStockException;
@@ -175,7 +176,7 @@ public class OrderDaoImplementation implements OrderDao {
 	}
 
 	@Override
-	public Order viewOrderById(int order_id) throws OrderSelectionException {
+	public Order viewOrderById(int order_id) throws OrderNotFoundException, OrderSelectionException {
 		try {
 			String select = "Select * from orders where order_id=?";
 			PreparedStatement psmt = con.prepareStatement(select);
@@ -187,6 +188,9 @@ public class OrderDaoImplementation implements OrderDao {
 				order = new Order(rs.getInt("order_id"), rs.getInt("customer_id"), rs.getTimestamp("order_date"),
 						rs.getDouble("total_amount"), rs.getString("status"));
 			}
+			else {
+				throw new OrderNotFoundException("Order not Found");
+			}
 			rs.close();
 			psmt.close();
 			return order;
@@ -197,7 +201,7 @@ public class OrderDaoImplementation implements OrderDao {
 	}
 
 	@Override
-	public Order existOrder(int order_id) throws OrderSelectionException {
+	public Order existOrder(int order_id) throws OrderNotFoundException, OrderSelectionException {
 		try {
 			String exist_order = "select * from orders where order_id=?";
 			PreparedStatement psmt = con.prepareStatement(exist_order);
@@ -211,6 +215,9 @@ public class OrderDaoImplementation implements OrderDao {
 				order.setOrder_id(rs.getInt("order_id"));
 				order.setStatus(rs.getString("status"));
 				order.setTotal_amount(rs.getDouble("total_amount"));
+			}
+			else {
+				throw new OrderNotFoundException("Order not Found");
 			}
 			psmt.close();
 			rs.close();
@@ -518,7 +525,7 @@ public class OrderDaoImplementation implements OrderDao {
 	}
 
 	@Override
-	public Map<String, Object> viewOrder(int order_id) throws OrderSelectionException {
+	public Map<String, Object> viewOrder(int order_id) throws OrderNotFoundException, OrderSelectionException {
 		Map<String, Object> orderDetailsMap = new HashMap<>();
 		try {
 			String selectOrder = "select o.order_id, o.order_date, o.total_amount,"
@@ -542,7 +549,9 @@ public class OrderDaoImplementation implements OrderDao {
 					orderDetailsMap.put(keys[i], values[i]);
 				}
 			}
-
+			else {
+				throw new OrderNotFoundException("Order not Found");
+			}
 			rs_selectOrder.close();
 			selectOrder_psmt.close();
 			return orderDetailsMap;

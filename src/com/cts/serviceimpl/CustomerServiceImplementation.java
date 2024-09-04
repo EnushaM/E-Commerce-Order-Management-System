@@ -37,27 +37,25 @@ public class CustomerServiceImplementation implements CustomerService {
 	}
 
 	@Override
-	public void viewCustomerById(int customer_id) throws CustomerNotFoundException {
+	public void viewCustomerById(int customer_id) {
 		try {
 			Customer customer = null;
 			customer = customerDao.viewCustomerById(customer_id);
 			if (customer != null) {
 				System.out.println(customer);
-			} else {
-				System.out.println("Sorry, No Customers Found with the specified ID, Please search for any other customer");
 			}
-		}
-		catch (CustomerSelectionException e) {
+		} catch (CustomerSelectionException e) {
 			// TODO: handle exception
-			System.out.println(
-					"Sorry, Failed to retrieve the customers in the database. Please Try again after some time.");
-			e.printStackTrace();
+			System.out.println(e.toString());
+		} catch (CustomerNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.toString());
 		}
-		
+
 	}
 
 	@Override
-	public void viewCustomerBySearch() throws CustomerNotFoundException {
+	public void viewCustomerBySearch() {
 		try {
 			System.out.println("Enter by How you want to search the customer");
 			System.out.print("1. By Customer's ID \n" + "2. By Customer's Name \n");
@@ -81,31 +79,29 @@ public class CustomerServiceImplementation implements CustomerService {
 					System.out.println("View your needed Product's details here:-");
 					for (Customer customer : customersList) {
 						System.out.print(customer);
-						if (customersList.indexOf(customer) != customersList.size()-1) {
+						if (customersList.indexOf(customer) != customersList.size() - 1) {
 							System.out.println("-------------------------");
 						}
 					}
-				} else {
-					System.out.println(
-							"Sorry, No Customers Found with the specified Name, Please Search for any other customer");
-				}
+				} 
 				break;
 			default:
 				System.out.println("Invalid Option, Choose between Customer ID and Customer Name");
 				break;
 			}
+		} catch (CustomerSelectionException e) {
+			System.out.println(e.toString());
 		}
-		catch (CustomerSelectionException e) {
-			System.out.println(
-					"Sorry, Failed to retrieve the customers in the database. Please Try again after some time.");
-			e.printStackTrace();		}
 		// TODO Auto-generated method stub
-		
+		catch (CustomerNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.toString());
+		}
 
 	}
 
 	@Override
-	public void updateCustomer() throws CustomerSelectionException, CustomerNotFoundException {
+	public void updateCustomer() {
 		try {
 			System.out.print("Enter the Customer Id of customer to update: ");
 			int customer_id = sc.nextInt();
@@ -122,8 +118,8 @@ public class CustomerServiceImplementation implements CustomerService {
 			// Not involving the customer_id since Primary key can't be updated
 			System.out.println("You can update the following details:");
 
-			System.out
-					.print("Enter the updated Customer's Name (leave blank to keep current Name: " + existingName + "): ");
+			System.out.print(
+					"Enter the updated Customer's Name (leave blank to keep current Name: " + existingName + "): ");
 			String name = sc.nextLine();
 			if (name.isEmpty()) {
 				name = existingName;
@@ -135,7 +131,7 @@ public class CustomerServiceImplementation implements CustomerService {
 				try {
 					phone = Long.parseLong(phoneinput);
 				} catch (NumberFormatException e) {
-					System.out.println("Invalid input for quantity. Keeping current value.");
+					System.out.println(e.toString() +"Invalid input for quantity. Keeping current value.");
 				}
 			}
 
@@ -146,8 +142,8 @@ public class CustomerServiceImplementation implements CustomerService {
 				email = existingEmail;
 			}
 
-			System.out.print("Enter the updated Customer's Address (leave blank to keep current Address: " + existingAddress
-					+ "): ");
+			System.out.print("Enter the updated Customer's Address (leave blank to keep current Address: "
+					+ existingAddress + "): ");
 			String address = sc.nextLine();
 			if (address.isEmpty()) {
 				address = existingAddress;
@@ -158,21 +154,21 @@ public class CustomerServiceImplementation implements CustomerService {
 			if (rowsAffected > 0) {
 				System.out.println("View the updated Customer's details here:-");
 				viewCustomerById(customer_id);
-			} else {
-				throw new CustomerNotFoundException("Sorry, Customer not Found, Search for any other customer");
 			}
-		}
-		catch (CustomerUpdationException e) {
-			// TODO: handle exception
-			System.out.println("Sorry, there is an Error updating the Customer. Please try again after sometime");
-			e.printStackTrace();
+		} catch (CustomerUpdationException e) {
+			System.out.println(e.toString());
+
 		}
 		// TODO Auto-generated method stub
-		
+		catch (CustomerSelectionException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.toString());
+		}
+
 	}
 
 	@Override
-	public void deleteCustomer() throws CustomerSelectionException, CustomerNotFoundException {
+	public void deleteCustomer() {
 		try {
 			System.out.print("Enter the Customer Id of customer to delete: ");
 			int customer_id = sc.nextInt();
@@ -184,38 +180,36 @@ public class CustomerServiceImplementation implements CustomerService {
 				System.out.println("Customer deleted successfully.");
 				System.out.println("View your deleted Customer's details here:-");
 				viewCustomerById(customer_id);
-			} else {
-				throw new CustomerNotFoundException("Sorry, there is no Customer with ID " + customer_id + ". Please try again after sometime");
-
 			}
-		}
-		catch (CustomerDeletionException e) {
+		} catch (CustomerDeletionException e) {
 			// TODO: handle exception
-			System.out.println("Sorry, Failed to delete the ID, Please try again after some time.");
-			e.printStackTrace();
+			System.out.println(e.toString());
+		} catch (CustomerSelectionException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.toString());
+		} catch (CustomerNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.toString());
 		}
-		
+
 	}
 
 	@Override
-	public void viewAllCustomers() throws CustomerNotFoundException {
+	public void viewAllCustomers() {
 		// TODO Auto-generated method stub
-		
+
 		try {
 			List<Customer> customersList = new ArrayList<>();
 			customersList = customerDao.viewAllCustomers();
 			if (customersList != null) {
 				for (Customer customer : customersList) {
 					System.out.println(customer);
-					if (customersList.indexOf(customer) != customersList.size()-1) {
+					if (customersList.indexOf(customer) != customersList.size() - 1) {
 						System.out.println("-------------------------");
 					}
 				}
-			} else {
-				throw new CustomerNotFoundException("Sorry, No Customers available now");
 			}
-		}
-		catch (CustomerSelectionException e) {
+		} catch (CustomerSelectionException e) {
 			// TODO: handle exception
 			System.out.println(
 					"Sorry, Failed to retrieve the customers in the database. Please Try again after some time.");
@@ -256,13 +250,10 @@ public class CustomerServiceImplementation implements CustomerService {
 			System.out.println("Customer added successfully");
 			System.out.println("View your added Customer's details here:-");
 			System.out.print(customer);
-		}
-		catch (CustomerInsertionException e) {
-			// TODO: handle exception
+		} catch (CustomerInsertionException e) {
+			System.out.println(e.toString());
 
-			System.out.println("Sorry, there is an Error adding Customer. Please try again later.");
-			e.printStackTrace();
 		}
-		
+
 	}
 }

@@ -64,10 +64,14 @@ public class Order {
 	@Override
 	public String toString() {
 
-		return "The Order Id is " + order_id + "\n" + "The Customer's Id who bought the Order is " + customer_id
-				+ "\n" + "The Date, the order booked is " + order_date + "\n" + "The Total Amount of the order is "
-				+ total_amount + "\n"
-				+ "The status of the Order is"
-				+status+"\n";
+		return String.format(
+			    "----------------------------------------------------------------------------------------\n" +
+			    "| %-20s %-25s %-25s %-20s %-20s |\n" +
+			    "| %-20d %-25d %-25s %-20.2f %-20s |\n" +
+			    "----------------------------------------------------------------------------------------\n",
+			    "Order Id", "Customer Id", "Order Date", "Total Amount", "Status",
+			    order_id, customer_id, order_date, total_amount, status
+			);
+
 	}
 }

@@ -30,6 +30,7 @@ public class ProductServiceImplementation implements ProductService {
 	private int quantityInStock;
 	private String description;
 	private Connection con;
+	private Product existProduct;
 
 	/*
 	 * the connection is declared before itself defining the connection in a
@@ -43,19 +44,24 @@ public class ProductServiceImplementation implements ProductService {
 		productDao = new ProductDaoImplementation(con);
 	}
 
-	public void viewProductById(int product_id) throws ProductSelectionException, ProductNotFoundException {
-		Product product = null;
-		product = productDao.viewProductById(product_id);
-		if (product != null) {
-			System.out.println(product);
-		} else {
-			throw new ProductNotFoundException("Sorry, No Products Found with the specified ID, Please search for any other product");
-		}
+	public void viewProductById(int product_id) {
 
+		try {
+			Product product = productDao.viewProductById(product_id);
+
+			System.out.println(product);
+
+		} catch (ProductSelectionException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.toString());
+		} catch (ProductNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.toString());
+		}
 	}
 
 	@Override
-	public void viewProductBySearch() throws ProductNotFoundException, ProductSelectionException {
+	public void viewProductBySearch() {
 		// TODO Auto-generated method stub
 		System.out.println("Enter by How you want to search the product");
 		System.out.print("1. By Product's ID \n" + "2. By Product's Name \n");
@@ -80,7 +86,14 @@ public class ProductServiceImplementation implements ProductService {
 			 */
 			System.out.print("Enter the needed Product's Name: ");
 			String name = sc.nextLine();
-			List<Product> productsList = productDao.viewProductbyName(name);
+			List<Product> productsList = null;
+			try {
+				productsList = productDao.viewProductbyName(name);
+			} catch (ProductSelectionException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.toString());
+			}
+
 			if (productsList != null) {
 				for (Product product : productsList) {
 					System.out.println("View your needed Product's details here:-");
@@ -90,9 +103,6 @@ public class ProductServiceImplementation implements ProductService {
 						System.out.println("-------------------------");
 					}
 				}
-			} else {
-				throw new ProductNotFoundException(
-						"Sorry, No Products Found with the specified Name, Please Search for any other product");
 			}
 			break;
 		default:
@@ -103,20 +113,18 @@ public class ProductServiceImplementation implements ProductService {
 	}
 
 	@Override
-	public void updateProduct() throws ProductSelectionException, ProductNotFoundException {
+	public void updateProduct() {
 		// TODO Auto-generated method stub
 		try {
 			System.out.print("Enter the Product Id of product to update: ");
 			int product_id = sc.nextInt();
 			sc.nextLine();
-			Product existProduct = productDao.existProduct(product_id);
-			if (existProduct != null) {
-				existingName = existProduct.getName();
-				existingDescription = existProduct.getDescription();
-				existingPrice = existProduct.getPrice();
-				existingQuantityInStock = existProduct.getQuantity_in_stock();
-			}
 
+			existProduct = productDao.existProduct(product_id);
+			existingName = existProduct.getName();
+			existingDescription = existProduct.getDescription();
+			existingPrice = existProduct.getPrice();
+			existingQuantityInStock = existProduct.getQuantity_in_stock();
 			System.out.println("Informing you that, Product Id can't be updated, as it is the unique identifier");
 			// Not involving the product_id since Primary key can't be updated
 			System.out.println("You can update the following details:");
@@ -143,7 +151,7 @@ public class ProductServiceImplementation implements ProductService {
 				try {
 					quantityInStock = Integer.parseInt(quantityInput);
 				} catch (NumberFormatException e) {
-					System.out.println("Invalid input for quantity. Keeping current value.");
+					System.out.println(e.toString() + "Invalid input for quantity. Keeping current value.");
 				}
 			}
 
@@ -155,7 +163,7 @@ public class ProductServiceImplementation implements ProductService {
 				try {
 					price = Integer.parseInt(priceInput);
 				} catch (NumberFormatException e) {
-					System.out.println("Invalid input for quantity. Keeping current value.");
+					System.out.println(e.toString() + "Invalid input for quantity. Keeping current value.");
 				}
 			}
 			int rowsAffected = productDao.updateProduct(product_id, existingName, existingDescription,
@@ -164,45 +172,43 @@ public class ProductServiceImplementation implements ProductService {
 				System.out.println("Product updated successfully");
 				System.out.println("View the updated Product's details here:-");
 				viewProductById(product_id);
-			} else {
-				throw new ProductNotFoundException("Sorry, Product not Found, Search for any other product");
 			}
-
+		} catch (ProductNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.toString());
 		} catch (ProductUpdationException e) {
-			// TODO: handle exception
-			System.out.print("Sorry, there is an Error updating the Product. Please try again after sometime");
-			e.printStackTrace();
+			System.out.println(e.toString());
+
 		}
+
 	}
 
 	@Override
-	public void deleteProduct() throws ProductNotFoundException, ProductSelectionException {
+	public void deleteProduct() {
 		try {
 			System.out.print("Enter the Product Id of product to delete: ");
 			int product_id = sc.nextInt();
 			sc.nextLine();
-			product = productDao.viewProductById(product_id);
+
+			product = productDao.existProduct(product_id);
 			boolean done = productDao.deleteProduct(product_id);
 			if (done) {
 				System.out.println("Product deleted successfully.");
 				System.out.println("The Deleted Product's details are here for you");
 				System.out.println(product);
-			} else {
-				throw new ProductNotFoundException(
-						"Sorry, there is no Product with" + product_id + ". Please try again after sometime");
 			}
+		} catch (ProductNotFoundException e) {
+			System.out.println(e.toString());
+
 		} catch (ProductDeletionException e) {
 			// TODO: handle exception
-			System.out
-					.println("Sorry, Failed to delete the product due to an error, Please try again after some time.");
-
-			e.printStackTrace();
+			System.out.println(e.toString());
 		}
 
 	}
 
 	@Override
-	public void viewAllProducts() throws ProductNotFoundException {
+	public void viewAllProducts() {
 		// TODO Auto-generated method stub
 
 		try {
@@ -216,15 +222,10 @@ public class ProductServiceImplementation implements ProductService {
 						System.out.println("-------------------------");
 					}
 				}
-			} else {
-				throw new ProductNotFoundException("Sorry, No Products available");
 			}
 		} catch (ProductSelectionException e) {
-			// TODO: handle exception
+			System.out.println(e.toString());
 
-			System.out
-					.println("Sorry, Failed to retrieve the products in the database. Please Try again after some time."+e);
-			e.printStackTrace();
 		}
 	}
 
@@ -239,10 +240,10 @@ public class ProductServiceImplementation implements ProductService {
 			// prompting the user for a random number input to avoid inline prompts, it can
 			// be a considered similar to capcha
 
-			System.out.print("Enter the Product Name: (Name must be less than 50 charcaters)");
+			System.out.print("Enter the Product Name (Name must be less than 50 charcaters): ");
 			name = sc.nextLine().trim();
 
-			System.out.print("Enter the Product Price: (Price value must be positive)");
+			System.out.print("Enter the Product Price (Price value must be positive): ");
 			price = sc.nextInt();
 			sc.nextLine();
 
@@ -254,11 +255,11 @@ public class ProductServiceImplementation implements ProductService {
 			sc.nextLine();
 			product = productDao.addProduct(name, description, price, quantity_in_stock);
 			System.out.println("Product added successfully");
-			System.out.println("View your added Product's details here:-");
+			System.out.println("View your added Product's details here:");
 			System.out.print(product);
 		} catch (ProductInsertionException e) {
-			System.out.println("Sorry, there is an Error adding Product. Please try again later." + e);
-			e.printStackTrace();
+			System.out.println(e.toString());
+
 		}
 
 	}

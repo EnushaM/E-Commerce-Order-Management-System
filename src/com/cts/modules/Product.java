@@ -56,11 +56,16 @@ public class Product {
 	}
 	@Override
 	public String toString() {
-		return "The Product's ID is "+product_id + "\n"
-				+ "The Product's Name is " + name + "\n"
-				+"The Product's Description is " + description + "\n"
-				+"The Product's Price is " + price + "\n"
-				+"The Product's Quantity available in stock is " + quantity_in_stock + "\n";
+		//%-val|datatype|%=> left-aligned and takes up val characters
+		return String.format(
+			    "-----------------------------------------------------------------------------------------------\n" +
+			    "| %-25s%-25s%-25s%-25s%-25s |\n" +
+			    "-----------------------------------------------------------------------------------------------\n" +
+			    "| %-25d%-25s%-25s%-25.2f%-25d |\n" +
+			    "-----------------------------------------------------------------------------------------------\n",
+			    "Product's ID", "Product's Name", "Product's Description", "Product's Price", "Quantity in Stock",
+			    product_id, name, description, price, quantity_in_stock
+			);
 	}
 	
 	

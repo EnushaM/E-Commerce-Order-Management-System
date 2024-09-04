@@ -59,10 +59,14 @@ public class OrderItem {
 	@Override
 	public String toString() {
 
-		return "The Order Item Id is " + order_id + "\n" + "The Order Id is " + order_id
-				+ "\n" + "The Product Id is " + product_id + "\n" 
-				+ "The Quantity of the order item is "+ quantity + "\n"
-				+ "The price of the Order Item is"
-				+ price+"\n";
+		return String.format(
+			    "-------------------------------------------------------------\n" +
+			    "| %-15s %-15s %-15s %-15s %-15s |\n" +
+			    "| %-15d %-15d %-15d %-15d %-15.2f |\n" +
+			    "-------------------------------------------------------------\n",
+			    "Order Item Id", "Order Id", "Product Id", "Quantity", "Price",
+			    order_id, order_id, product_id, quantity, price
+			);
+
 	}
 }
