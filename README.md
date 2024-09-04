@@ -45,9 +45,9 @@ mysql -u your_username -p ecommerceordermanagementsystem < path/to/your/schema.s
 Update Database Configuration:
 
 Update the database connection settings in the project
-db.url=jdbc:mysql://localhost:3306/ecommerceordermanagementsystem
-db.username=your_username
-db.password=your_password
+url=jdbc:mysql://localhost:3306/ecommerceordermanagementsystem
+username=your_username
+password=your_password
 Step 3: Build the Project
 
 Manual Compilation
