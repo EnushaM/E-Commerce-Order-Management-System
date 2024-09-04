@@ -50,8 +50,7 @@ Copy code
 mysql -u your_username -p ecommerceordermanagementsystem < path/to/your/schema.sql
 Update Database Configuration:
 
-Update the database connection settings in the project (usually found in a config.properties file or directly in the code).
-Example configuration might be found in src/main/resources/config.properties:
+Update the database connection settings in the project
 properties
 Copy code
 db.url=jdbc:mysql://localhost:3306/ecommerceordermanagementsystem
