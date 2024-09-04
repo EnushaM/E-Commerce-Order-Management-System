@@ -29,9 +29,7 @@ Integrated Development Environment (IDE)
 
 Recommended: IntelliJ IDEA or Eclipse
 Step 1: Clone the Repository
-Clone the project repository from GitHub (or wherever your project is hosted) to your local machine.
-bash
-Copy code
+Clone the project repository from GitHub to your local machine.
 git clone https://github.com/EnushaM/E-Commerce-Order-Management-System.git
 cd E-Commerce-Order-Management-System
 
@@ -39,46 +37,24 @@ Step 2: Configure the Database
 Create a Database:
 
 Log in to your MySQL server and create a database for the project.
-sql
-Copy code
 CREATE DATABASE ecommerceordermanagementsystem;
 Set Up Tables:
 
-Use the provided SQL scripts (usually located in a resources or sql folder) to create the necessary tables and insert initial data.
-bash
-Copy code
+Use the provided SQL scripts to create the necessary tables and insert initial data.
 mysql -u your_username -p ecommerceordermanagementsystem < path/to/your/schema.sql
 Update Database Configuration:
 
 Update the database connection settings in the project
-properties
-Copy code
 db.url=jdbc:mysql://localhost:3306/ecommerceordermanagementsystem
 db.username=your_username
 db.password=your_password
 Step 3: Build the Project
 
-Option 1: Manual Compilation
-If you're not using Maven, you can compile the Java files manually using javac:
-
-bash
-Copy code
+Manual Compilation
 javac -d out -sourcepath src src/com/cts/client/main.java
-Then, package the application into a JAR:
 
-bash
-Copy code
-jar cvf mysql-connector-j-8.0.31.jar -C out/ .
 Step 4: Run the Application
 Once the project is built, you can run it using the following command:
-
-bash
-Copy code
-java -jar target/mysql-connector-j-8.0.31.jar
-Or, if you didn't package it into a JAR, you can run the MainApp class directly:
-
-bash
-Copy code
 java -cp out com.cts.client.main
 
 Step 5: Using the Application
